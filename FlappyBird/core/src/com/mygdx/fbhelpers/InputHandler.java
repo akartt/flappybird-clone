@@ -1,8 +1,5 @@
 package com.mygdx.fbhelpers;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import com.badlogic.gdx.InputProcessor;
 import com.mygdx.gameobjects.Bird;
 import com.mygdx.gameworld.GameWorld;
@@ -29,19 +26,16 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
