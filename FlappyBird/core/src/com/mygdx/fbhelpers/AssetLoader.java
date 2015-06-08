@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * This class loads assets/data that the game will use, from the texture file as well as audio files.
- * @author Park
- *
  */
 public class AssetLoader {
 	public static Texture texture; // Texture from which the game graphics will be created
@@ -69,12 +67,15 @@ public class AssetLoader {
 		shadow = new BitmapFont(Gdx.files.internal("data/shadow.fnt"));
 		shadow.getData().setScale(0.25f, -0.25f);
 		
-		prefs = Gdx.app.getPreferences("FlappyBird");
-		if (!prefs.contains("highScore")) {
+		prefs = Gdx.app.getPreferences("FlappyBird"); // App preferences used to store the high-score
+		if (!prefs.contains("highScore")) { // Initialize the high-score to 0 if not already set
 			prefs.putInteger("highScore", 0);
 		}
 	}
-	
+
+	/**
+	 * This method disposes all assets after the game is finished
+	 */
 	public static void dispose() {
 		texture.dispose();
 		dead.dispose();
@@ -84,12 +85,22 @@ public class AssetLoader {
 		font.dispose();
 		shadow.dispose();
 	}
-	
+
+	/**
+	 * This function updates the high-score and stores in the app preferences
+	 * @param score
+	 * 			the new high-score to be stored
+	 */
 	public static void setHighScore(int score) {
 		prefs.putInteger("highScore", score);
 		prefs.flush();
 	}
-	
+
+	/**
+	 * High-score getter
+	 * @return
+	 * 			Current high-score stored in the app preferences
+	 */
 	public static int getHighScore() {
 		return prefs.getInteger("highScore");
 	}

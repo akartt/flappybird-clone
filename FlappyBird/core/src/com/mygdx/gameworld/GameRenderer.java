@@ -15,11 +15,14 @@ import com.mygdx.gameobjects.Pipe;
 import com.mygdx.gameobjects.ScrollHandler;
 import com.mygdx.ui.Button;
 
+/**
+ * This class implements the game renderer, which renders the game from the texture models
+ */
 public class GameRenderer {
 	private GameWorld world;
-	private OrthographicCamera cam;
+	private OrthographicCamera cam; // Used for orthographic projection
 	private ShapeRenderer shapeRenderer;
-	private SpriteBatch batcher;
+	private SpriteBatch batcher; // Draws batched quads using indices
 	
 	private int gameHeight;
 	private int yMidPoint;
@@ -34,7 +37,16 @@ public class GameRenderer {
 	private Pipe firstPipe, secondPipe, thirdPipe;
 	
 	private Button startButton;
-	
+
+	/**
+	 * Constructor for game renderer
+	 * @param world
+	 * 			the game world containing all game objects
+	 * @param gameHeight
+	 * 			height of the game in pixels
+	 * @param yMidPoint
+	 * 			vertical mid-point of the game
+	 */
 	public GameRenderer(GameWorld world, int gameHeight, int yMidPoint) {
 		this.world = world;
 		this.gameHeight = gameHeight;
@@ -54,6 +66,13 @@ public class GameRenderer {
 		initAssets();
 	}
 
+	/**
+	 * Draws all objects from the texture models and renders them to display on the game
+	 * @param delta
+	 * 			time since the last render() call
+	 * @param runTime
+	 * 			runtime of the game
+	 */
 	public void render(float delta, float runTime) {
 		// Fill Screen with black to prevent flickering
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -116,12 +135,18 @@ public class GameRenderer {
 		batcher.end();
 	}
 
+	/**
+	 * Draws the score using the font and shadow game assets
+	 */
 	private void drawScore() {
 		String score = world.getScore() + "";
 		AssetLoader.shadow.draw(batcher, "" + world.getScore(), 68 - (3 * score.length()), 12);
 		AssetLoader.font.draw(batcher, "" + world.getScore(), 68 - (3 * score.length() - 1), 11);
 	}
-	
+
+	/**
+	 * Initializes game objects
+	 */
 	private void initGameObjects() {
         bird = world.getBird();
         scrollHandler = world.getScrollHandler();
@@ -132,6 +157,9 @@ public class GameRenderer {
         thirdPipe = scrollHandler.getThirdPipe();
     }
 
+	/**
+	 * Loads and initializes assets from the AssetLoader class
+	 */
     private void initAssets() {
         bg = AssetLoader.bg;
         grass = AssetLoader.grass;
@@ -144,12 +172,18 @@ public class GameRenderer {
         fbLogo = AssetLoader.fbLogo;
         gameOver = AssetLoader.gameOver;
     }
-    
+
+	/**
+	 * Draws the grass
+	 */
     private void drawGrass() {
     	batcher.draw(grass, frontGrass.getX(), frontGrass.getY(), frontGrass.getWidth() + 1, frontGrass.getHeight());
     	batcher.draw(grass, backGrass.getX(), backGrass.getY(), backGrass.getWidth() + 1, backGrass.getHeight());
     }
-    
+
+	/**
+	 * Draws the pipe ends
+	 */
     private void drawPipeEnds() {
     	batcher.draw(barUp, firstPipe.getX() - 1, firstPipe.getY() +  firstPipe.getHeight() - 14, 24, 14);
     	batcher.draw(barDown, firstPipe.getX() - 1, firstPipe.getY() +  firstPipe.getHeight() + 45, 24, 14);
@@ -160,7 +194,10 @@ public class GameRenderer {
     	batcher.draw(barUp, thirdPipe.getX() - 1, thirdPipe.getY() +  thirdPipe.getHeight() - 14, 24, 14);
     	batcher.draw(barDown, thirdPipe.getX() - 1, thirdPipe.getY() +  thirdPipe.getHeight() + 45, 24, 14);
     }
-    
+
+	/**
+	 * Draws the pipes
+	 */
     private void drawPipes() {
     	batcher.draw(bar, firstPipe.getX(), firstPipe.getY(), firstPipe.getWidth(), firstPipe.getHeight());
     	batcher.draw(bar, firstPipe.getX(), firstPipe.getY() + firstPipe.getHeight() + 45, firstPipe.getWidth(), yMidPoint + 66 - (firstPipe.getHeight() + 45));
@@ -171,7 +208,12 @@ public class GameRenderer {
     	batcher.draw(bar, thirdPipe.getX(), thirdPipe.getY(), thirdPipe.getWidth(), thirdPipe.getHeight());
     	batcher.draw(bar, thirdPipe.getX(), thirdPipe.getY() + thirdPipe.getHeight() + 45, thirdPipe.getWidth(), yMidPoint + 66 - (thirdPipe.getHeight() + 45));
     }
-    
+
+	/**
+	 * Draws the bird in the center of the screen
+	 * @param runTime
+	 * 			runtime of the game
+	 */
     private void drawBirdCentered(float runTime) {
         batcher.draw(animation.getKeyFrame(runTime), 
         			 59, 
@@ -179,7 +221,12 @@ public class GameRenderer {
                 	 bird.getWidth() / 2.0f, bird.getHeight() / 2.0f,
                 	 bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
     }
-    
+
+	/**
+	 * Draws the bird while the game is running
+	 * @param runTime
+	 * 			runtime of the game
+	 */
     public void drawBird(float runTime) {
 		if (bird.noFlap()) {
 			batcher.draw(birdMid, bird.getX(), bird.getY(), bird.getWidth() / 2.0f, bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
@@ -189,47 +236,30 @@ public class GameRenderer {
 						 bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
 		}
     }
-    
+
+	/**
+	 * Draws the main menu UI, containing the startbutton and the logo
+	 */
     public void drawMenuUI() {
     	batcher.draw(fbLogo, 12, yMidPoint - 50, 
     				 fbLogo.getRegionWidth() / 1.2f,
     				 fbLogo.getRegionHeight() / 1.2f);
-
     	startButton.draw(batcher);
     	
     }
-    
+
+	/**
+	 * Draws the get ready message
+	 */
 	private void drawReady() {
 		batcher.draw(ready, 36, yMidPoint - 50, 68, 14);
 	}
-	
+
+	/**
+	 * Draws the game over message
+	 */
 	private void drawGameOver() {
 		batcher.draw(gameOver, 24, yMidPoint - 50, 92, 14);
 	}
     
 }
-
-/* Simple Rectangle Drawing Example
-// 1. Draw a black background (prevents flickering)
-Gdx.gl.glClearColor(0, 0, 0, 1);
-Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-// 2. Draw the filled rectangle
-// Tell shape renderer to begin drawing shapes
-shapeRenderer.begin(ShapeType.Filled);
-// Choose RGB Color of 87, 109, and 120 at full opacity
-shapeRenderer.setColor(0 / 255.0f, 0 / 255.0f, 255 / 255.0f, 1);
-// Draw rectangle from GameWorld world (Using ShapeType.Filled)
-shapeRenderer.rect(world.getRect().x, world.getRect().y, world.getRect().width, world.getRect().height);
-// Tells shape renderer to finish rendering (must be called every time)
-shapeRenderer.end();
-
-// 3. Draw the rectangle's outline
-// Tells shape renderer to draw an outline of the following shapes
-shapeRenderer.begin(ShapeType.Line);
-// Choose RGB Color of 255, 109, 120 at full opacity
-shapeRenderer.setColor(255 / 255.0f, 0 / 255.0f, 0 / 255.0f, 1);
-// Draw rectangle from GameWorld world (Using ShapeType.Line)
-shapeRenderer.rect(world.getRect().x, world.getRect().y, world.getRect().width, world.getRect().height);
-shapeRenderer.end();
-*/
