@@ -252,14 +252,14 @@ public class GameRenderer {
 	 * Draws the get ready message
 	 */
 	private void drawReady() {
-		batcher.draw(ready, 36, yMidPoint - 50, 68, 14);
+		batcher.draw(ready, 36, yMidPoint - 75, 68, 14);
 	}
 
 	/**
 	 * Draws the game over message
 	 */
 	private void drawGameOver() {
-		batcher.draw(gameOver, 24, yMidPoint - 50, 92, 14);
+		batcher.draw(gameOver, 24, yMidPoint - 75, 92, 14);
 	}
     
 }
