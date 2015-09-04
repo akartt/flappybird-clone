@@ -6,4 +6,4 @@ To play this game on your Android device:
 2. Open and build FlappyBird through Android Studio
 3. Connect your device via USB, run and install game
 
-Alternatively, download the APK available through the 'Releases' tab on this repo.
+Alternatively, download the APK available through the 'release' tab on this repo.
